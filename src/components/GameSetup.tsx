@@ -74,7 +74,9 @@ const GameSetup: React.FC<GameSetupProps> = ({
 
   return (
     <GameLayout>
-      <h1 className="text-4xl font-bold mb-6">Japanese Character Quiz</h1>
+      <h1 className="text-4xl font-bold mb-6">
+        <strong>HiraKata</strong>: Japanese Character Quiz
+      </h1>
       <div className="space-y-8 mb-8">
         <Select
           label="Character Type"
