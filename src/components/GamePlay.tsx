@@ -29,12 +29,12 @@ const GamePlay: React.FC<GamePlayProps> = ({
       },
     });
     setIsAnswered(true);
-    setSelectedAnswer(answer); // Track the user's selected answer
+    setSelectedAnswer(answer);
   };
 
   const nextQuestion = () => {
-    setIsAnswered(false); // Re-enable buttons for the next question
-    setSelectedAnswer(null); // Reset selected answer
+    setIsAnswered(false);
+    setSelectedAnswer(null);
     dispatch({ type: "NEXT_ROUND" });
     generateQuestion();
   };
@@ -50,18 +50,17 @@ const GamePlay: React.FC<GamePlayProps> = ({
           const isCorrectAnswer = option === state.currentQuestion?.roumaji;
           const isSelectedAnswer = option === selectedAnswer;
 
-          let buttonStyle =
-            "bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded";
+          let buttonStyle = "text-white font-bold py-2 px-4 rounded ";
 
-          if (isAnswered) {
+          if (!isAnswered) {
+            buttonStyle += "bg-green-500 hover:bg-green-700";
+          } else {
             if (isCorrectAnswer) {
-              buttonStyle =
-                "bg-green-700 text-white font-bold py-2 px-4 rounded"; // Highlight correct answer
+              buttonStyle += "bg-green-700"; // Always show correct answer in green
             } else if (isSelectedAnswer) {
-              buttonStyle = "bg-red-500 text-white font-bold py-2 px-4 rounded"; // Highlight incorrect selected answer
+              buttonStyle += "bg-red-500"; // Show incorrect selected answer in red
             } else {
-              buttonStyle =
-                "opacity-50 cursor-not-allowed text-white font-bold py-2 px-4 rounded"; // Dim other options
+              buttonStyle += "bg-gray-500"; // Dim other options
             }
           }
 
@@ -78,21 +77,22 @@ const GamePlay: React.FC<GamePlayProps> = ({
         })}
       </div>
       {state.feedback && <p className="mt-4 text-lg">{state.feedback}</p>}
-      {isAnswered && state.currentRound === state.rounds ? (
-        <button
-          onClick={() => dispatch({ type: "END_GAME" })}
-          className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-        >
-          Complete Game
-        </button>
-      ) : (
-        <button
-          onClick={nextQuestion}
-          className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-        >
-          Next Question
-        </button>
-      )}
+      {isAnswered &&
+        (state.currentRound === state.rounds ? (
+          <button
+            onClick={() => dispatch({ type: "END_GAME" })}
+            className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          >
+            Complete Game
+          </button>
+        ) : (
+          <button
+            onClick={nextQuestion}
+            className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          >
+            Next Question
+          </button>
+        ))}
     </div>
   );
 };

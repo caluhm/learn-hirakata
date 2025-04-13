@@ -36,7 +36,8 @@ export type Action =
       payload: { feedback: string; selectedAnswer: string };
     }
   | { type: "NEXT_ROUND" }
-  | { type: "END_GAME" };
+  | { type: "END_GAME" }
+  | { type: "RESET_GAME" }; // Add new action type
 
 const initialState: State = {
   rounds: 5,
@@ -93,6 +94,8 @@ const reducer = (state: State, action: Action): State => {
         ...state,
         gameStarted: false,
       }; // Removed appending to summary to avoid duplication
+    case "RESET_GAME":
+      return { ...initialState }; // Reset to initial state
     default:
       return state;
   }
@@ -104,6 +107,10 @@ export const useGameState = () => {
   const startGame = () => {
     dispatch({ type: "START_GAME" });
     generateQuestion(); // Generate the first question when the game starts
+  };
+
+  const resetGame = () => {
+    dispatch({ type: "RESET_GAME" });
   };
 
   const generateQuestion = () => {
@@ -126,5 +133,5 @@ export const useGameState = () => {
     return [correctAnswer, ...randomIncorrect].sort(() => 0.5 - Math.random());
   };
 
-  return { state, dispatch, startGame, generateQuestion };
+  return { state, dispatch, startGame, generateQuestion, resetGame };
 };

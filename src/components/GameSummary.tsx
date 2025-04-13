@@ -4,15 +4,16 @@ import { State } from "../hooks/useGameState";
 type GameSummaryProps = {
   state: State;
   startGame: () => void;
+  resetGame: () => void;
 };
 
-const GameSummary: React.FC<GameSummaryProps> = ({ state, startGame }) => {
+const GameSummary: React.FC<GameSummaryProps> = ({ state, resetGame }) => {
   return (
     <div className="text-center">
       <h1 className="text-4xl font-bold mb-4">Game Over</h1>
       <p className="text-lg mb-4">Your score: {state.score}</p>
       <button
-        onClick={startGame}
+        onClick={resetGame}
         className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
       >
         Play Again
