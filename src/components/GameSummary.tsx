@@ -8,9 +8,9 @@ type ResultsTableProps = {
 };
 
 const ResultsTable: React.FC<ResultsTableProps> = ({ summary }) => (
-  <div className="overflow-x-auto">
+  <div className="overflow-x-auto max-h-[400px] overflow-y-auto">
     <table className="w-full border-collapse">
-      <thead>
+      <thead className="sticky top-0 bg-black/50">
         <tr className="bg-black/20">
           <th className="p-3 text-center border-b border-white/20">Round</th>
           <th className="p-3 text-center border-b border-white/20">Type</th>
@@ -81,8 +81,10 @@ const GameSummary: React.FC<GameSummaryProps> = ({ state, resetGame }) => {
     <GameLayout>
       <h1 className="text-4xl font-bold mb-4">Game Over</h1>
       <p className="text-2xl mb-6">
-        Final Score: <span className="font-bold">{state.score}</span> /{" "}
-        {state.rounds}
+        Final Score:{" "}
+        <span className="inline-block bg-black/80 px-4 py-1 rounded-full">
+          <span className="font-bold">{state.score}</span> / {state.rounds}
+        </span>
       </p>
       <GameButton onClick={resetGame} variant="primary" className="mb-8">
         Play Again
