@@ -118,6 +118,21 @@ const reducer = (state: State, action: Action): State => {
   }
 };
 
+const shuffle = <T>(array: T[]): T[] => {
+  return [...array].sort(() => 0.5 - Math.random());
+};
+
+const filterValidCharacters = (chars: Kana[], correctAnswer: Kana): Kana[] => {
+  return chars.filter(
+    (item) =>
+      item.source === correctAnswer.source &&
+      item.roumaji !== correctAnswer.roumaji &&
+      item.roumaji &&
+      !item.roumaji.includes("(") &&
+      /^[a-z]+$/.test(item.roumaji)
+  );
+};
+
 export const useGameState = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
@@ -147,33 +162,26 @@ export const useGameState = () => {
 
   const generateQuestion = () => {
     const availableChars = getAvailableCharacters();
-    const randomIndex = Math.floor(Math.random() * availableChars.length);
-    const question = availableChars[randomIndex];
-    const shuffledOptions = shuffleOptions(question);
+    const question =
+      availableChars[Math.floor(Math.random() * availableChars.length)];
+    const options = shuffleOptions(question);
+
     dispatch({
       type: "GENERATE_QUESTION",
-      payload: { question, options: shuffledOptions },
+      payload: { question, options },
     });
   };
 
   const shuffleOptions = (correctAnswer: Kana): string[] => {
-    const sameTypeChars = getAvailableCharacters().filter(
-      (item) =>
-        item.source === correctAnswer.source &&
-        item.roumaji !== correctAnswer.roumaji &&
-        item.roumaji &&
-        !item.roumaji.includes("(") &&
-        /^[a-z]+$/.test(item.roumaji)
+    const validChars = filterValidCharacters(
+      getAvailableCharacters(),
+      correctAnswer
     );
-
-    const randomIncorrect = sameTypeChars
-      .sort(() => 0.5 - Math.random())
+    const incorrectOptions = shuffle(validChars)
       .slice(0, 3)
       .map((item) => item.roumaji);
 
-    return [correctAnswer.roumaji, ...randomIncorrect].sort(
-      () => 0.5 - Math.random()
-    );
+    return shuffle([correctAnswer.roumaji, ...incorrectOptions]);
   };
 
   return { state, dispatch, startGame, generateQuestion, resetGame };
