@@ -20,20 +20,23 @@ const GameSetup: React.FC<GameSetupProps> = ({
   };
 
   return (
-    <div className="text-center">
-      <h1 className="text-4xl font-bold mb-4">Hiragana Quiz</h1>
-      <label className="block text-lg mb-2">
-        Number of Rounds:
-        <input
-          type="number"
-          value={state.rounds}
-          onChange={handleRoundsChange}
-          className="ml-2 p-1 border rounded"
-        />
-      </label>
+    <div className="max-w-4xl w-full mx-auto p-6 bg-white/10 rounded-lg backdrop-blur-sm text-center">
+      <h1 className="text-4xl font-bold mb-6">Hiragana Quiz</h1>
+      <div className="mb-8">
+        <label className="text-2xl mb-4 block">
+          Number of Rounds:
+          <input
+            type="number"
+            value={state.rounds}
+            onChange={handleRoundsChange}
+            min="1"
+            className="ml-4 p-2 border rounded bg-white/20 backdrop-blur-sm text-white text-center text-2xl w-24"
+          />
+        </label>
+      </div>
       <button
         onClick={startGame}
-        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg text-lg transition-colors"
       >
         Start Game
       </button>

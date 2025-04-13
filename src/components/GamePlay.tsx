@@ -18,7 +18,7 @@ const GamePlay: React.FC<GamePlayProps> = ({
   );
 
   const handleAnswer = (answer: string) => {
-    if (isAnswered) return; // Prevent multiple answers
+    if (isAnswered) return;
 
     const isCorrect = answer === state.currentQuestion?.roumaji;
     dispatch({
@@ -40,55 +40,78 @@ const GamePlay: React.FC<GamePlayProps> = ({
   };
 
   return (
-    <div className="text-center">
-      <h1 className="text-2xl font-bold mb-4">Round {state.currentRound}</h1>
-      <p className="text-lg mb-4">
-        What is the pronunciation of {state.currentQuestion?.kana}?
-      </p>
-      <div className="grid grid-cols-2 gap-4">
-        {state.options.map((option: string, index: number) => {
-          const isCorrectAnswer = option === state.currentQuestion?.roumaji;
-          const isSelectedAnswer = option === selectedAnswer;
-
-          let buttonStyle = "text-white font-bold py-2 px-4 rounded ";
-
-          if (!isAnswered) {
-            buttonStyle += "bg-green-500 hover:bg-green-700";
-          } else {
-            if (isCorrectAnswer) {
-              buttonStyle += "bg-green-700"; // Always show correct answer in green
-            } else if (isSelectedAnswer) {
-              buttonStyle += "bg-red-500"; // Show incorrect selected answer in red
-            } else {
-              buttonStyle += "bg-gray-500"; // Dim other options
-            }
-          }
-
-          return (
-            <button
-              key={index}
-              onClick={() => handleAnswer(option)}
-              disabled={isAnswered}
-              className={buttonStyle}
-            >
-              {option}
-            </button>
-          );
-        })}
+    <div className="max-w-4xl w-full mx-auto p-6 bg-white/10 rounded-lg backdrop-blur-sm text-center">
+      <div className="mb-6">
+        <h1 className="text-4xl font-bold mb-2">Round {state.currentRound}</h1>
+        <p className="text-2xl">Score: {state.score}</p>
       </div>
-      {state.feedback && <p className="mt-4 text-lg">{state.feedback}</p>}
+
+      <div className="mb-8">
+        <p className="text-3xl mb-6">
+          What is the pronunciation of{" "}
+          <span className="text-4xl font-bold">
+            {state.currentQuestion?.kana}
+          </span>
+          ?
+        </p>
+        <div className="grid grid-cols-2 gap-4 max-w-2xl mx-auto">
+          {state.options.map((option: string, index: number) => {
+            const isCorrectAnswer = option === state.currentQuestion?.roumaji;
+            const isSelectedAnswer = option === selectedAnswer;
+
+            let buttonStyle =
+              "text-white text-xl font-bold py-4 px-6 rounded-lg transition-colors ";
+
+            if (!isAnswered) {
+              buttonStyle += "bg-blue-500 hover:bg-blue-700";
+            } else {
+              if (isCorrectAnswer) {
+                buttonStyle += "bg-green-600";
+              } else if (isSelectedAnswer) {
+                buttonStyle += "bg-red-600";
+              } else {
+                buttonStyle += "bg-gray-600";
+              }
+            }
+
+            return (
+              <button
+                key={index}
+                onClick={() => handleAnswer(option)}
+                disabled={isAnswered}
+                className={buttonStyle}
+              >
+                {option}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      {state.feedback && (
+        <p
+          className={`text-2xl font-bold mb-6 ${
+            state.feedback.includes("Correct")
+              ? "text-green-400"
+              : "text-red-400"
+          }`}
+        >
+          {state.feedback}
+        </p>
+      )}
+
       {isAnswered &&
         (state.currentRound === state.rounds ? (
           <button
             onClick={() => dispatch({ type: "END_GAME" })}
-            className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg text-lg transition-colors"
           >
             Complete Game
           </button>
         ) : (
           <button
             onClick={nextQuestion}
-            className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg text-lg transition-colors"
           >
             Next Question
           </button>
