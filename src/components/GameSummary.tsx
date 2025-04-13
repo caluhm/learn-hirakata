@@ -32,6 +32,9 @@ const GameSummary: React.FC<GameSummaryProps> = ({ state, resetGame }) => {
                   Round
                 </th>
                 <th className="p-3 text-center border-b border-white/20">
+                  Type
+                </th>
+                <th className="p-3 text-center border-b border-white/20">
                   Question
                 </th>
                 <th className="p-3 text-center border-b border-white/20">
@@ -56,6 +59,9 @@ const GameSummary: React.FC<GameSummaryProps> = ({ state, resetGame }) => {
                     }`}
                   >
                     <td className="p-3 text-center">{index + 1}</td>
+                    <td className="p-3 text-center capitalize">
+                      {round.characterType}
+                    </td>
                     <td className="p-3 text-center text-2xl">
                       {round.question}
                     </td>
